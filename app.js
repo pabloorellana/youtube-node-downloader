@@ -1,4 +1,4 @@
-var downloader = require('./downloader.js');
+var downloader = require('./lib/downloader.js');
 
 var flag = process.argv[2];
 
