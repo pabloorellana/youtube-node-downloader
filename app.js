@@ -20,9 +20,9 @@ if (!handler) {
   return;
 }
 
-handler(url).then(a);
+handler(url).then(showResults);
 
-function a (results) {
+function showResults (results) {
   var completed = results.filter((result) => {
     return result.state === 'resolved';
   }).length;
@@ -36,18 +36,17 @@ function a (results) {
 
   if (failed.length !== 0 ) {
     console.log('Details:' + '\n');
+    failed.forEach((reason) => {
+      console.log(reason.value + '\n');
+    });
   }
-
-  failed.forEach((reason) => {
-    console.log(reason.value + '\n');
-  });
-}
+};
 
 function downloadVideosByPlayListId (playlistIds) {
   return youtubeApi.getPlayLists(playlistIds).then((playlist) => {
     utils.showPlayListInfo(playlist);
     return async.eachSeriesSettled(playlist, downloader.download);
-  })//.then(a);
+  });
 };
 
 function downloadVideosByChannelId (channelIds) {
@@ -59,7 +58,6 @@ function downloadVideosByChannelId (channelIds) {
 function downloadVideoById (videoIds) {
   return youtubeApi.getVideos(videoIds).then((videos) => {
     return async.eachSeriesSettled(videos, downloader.download);
-  }).then(a);
-
+  });
 };
 
